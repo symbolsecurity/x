@@ -2,11 +2,12 @@ package main
 
 import (
 	"log"
-	"sym-video/build"
-	"sym-video/cmd"
-	"sym-video/envloader"
-	"sym-video/srt"
-	"sym-video/transcript"
+
+	"github.com/symbolsecurity/x/scorm_generator/build"
+	"github.com/symbolsecurity/x/scorm_generator/cmd"
+	"github.com/symbolsecurity/x/scorm_generator/envloader"
+	"github.com/symbolsecurity/x/scorm_generator/srt"
+	"github.com/symbolsecurity/x/scorm_generator/transcript"
 )
 
 func main() {

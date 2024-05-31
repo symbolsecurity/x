@@ -2,7 +2,8 @@ package transcript
 
 import (
 	_ "embed"
-	"sym-video/groq"
+
+	"github.com/symbolsecurity/x/scorm_generator/groq"
 )
 
 //go:embed system_prompt.txt
