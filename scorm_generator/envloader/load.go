@@ -11,7 +11,7 @@ import (
 func Load(filename string) error {
 	file, err := os.Open(filename)
 	if err != nil {
-		return err
+		return nil
 	}
 	defer file.Close()
 
