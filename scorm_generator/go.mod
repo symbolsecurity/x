@@ -1,4 +1,4 @@
-module github.com/symbolsecurity/x/scormgenerator
+module github.com/symbolsecurity/x/scorm_generator
 
 go 1.22.3
 
