@@ -10,3 +10,12 @@ This Golang application generates quizzes from video subtitles and packages them
 ## Installation
 
 WIP
+
+## Usage
+The application requires the following flags:
+
+`--video` or `-v`: Path to the video file.
+`--subtitles` or `-s`: Path to the subtitles file.
+`--name` or `-n`: (Optional) Name for the generated questions. Defaults to output.
+`--output` or `-o`: (Optional) Name of the output ZIP file. Defaults to archive.zip.
+
