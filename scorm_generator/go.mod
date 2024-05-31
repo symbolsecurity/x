@@ -1,4 +1,4 @@
-module sym-video
+module github.com/symbolsecurity/x/scormgenerator
 
 go 1.22.3
 
