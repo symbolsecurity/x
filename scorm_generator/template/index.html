@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>SCORM</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="module" src="app.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @layer base {
+            video::-webkit-media-controls {
+                display: none;
+            }
+
+            video::-webkit-media-controls-play-button {
+                display: none;
+            }
+
+            video::-webkit-media-controls-volume-slider {
+                display: none;
+            }
+
+            video::-webkit-media-controls-mute-button {
+                display: none;
+            }
+
+            video::-webkit-media-controls-timeline {
+                display: none;
+            }
+
+            video::-webkit-media-controls-current-time-display {
+                display: none;
+            }
+
+            html {
+                height: 100vh;
+                width: 100vw;
+            }
+        }
+    </style>
+</head>
+<body class="bg-indigo-950 h-screen w-full">
+    <div id="container" class="m-auto rounded-lg overflow-hidden relative group h-full w-full flex items-center grow">
+        <figure class="w-full">
+            <video class="w-full">
+                <source src="video.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <!-- CONTROLS -->
+            <div id="controls" class="opacity-0 p-5 absolute bottom-0 left-0 w-full transition-opacity duration-300 ease-linear group-hover:opacity-100">
+                <!-- PROGRESS BAR -->
+                <div class="h-1 w-full bg-white cursor-pointer mb-4">
+                <div id="progress-indicator" class="h-full w-0 bg-indigo-800 transition-all duration-500 ease-in-out"></div>
+                </div>
+            
+                <div class="flex items-center justify-between opacity-70">
+                    <div class="flex items-center space-x-4">
+                        <!-- PLAY BUTTON -->
+                        <button id="play-pause" class="transition-all duration-100 ease-linear hover:scale-125">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" class="size-6 stroke-white">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M21 7.5V18M15 7.5V18M3 16.811V8.69c0-.864.933-1.406 1.683-.977l7.108 4.061a1.125 1.125 0 0 1 0 1.954l-7.108 4.061A1.125 1.125 0 0 1 3 16.811Z" />
+                            </svg>
+                        </button>
+
+                        <!-- REPLAY BUTTON -->
+                        <button id="replay" class="transition-all duration-100 ease-linear hover:scale-125">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" class="size-6 stroke-white">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
+                            </svg>
+                        </button>
+
+                        <!-- DURATION -->
+                        <span id="duration" class="text-white"></span>
+                    </div>
+                
+                    <div>
+                        <!-- VOLUME BUTTON -->
+                        <button id="volume" class="transition-all duration-100 ease-linear hover:scale-125">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" class="size-6 stroke-white">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M19.114 5.636a9 9 0 0 1 0 12.728M16.463 8.288a5.25 5.25 0 0 1 0 7.424M6.75 8.25l4.72-4.72a.75.75 0 0 1 1.28.53v15.88a.75.75 0 0 1-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.009 9.009 0 0 1 2.25 12c0-.83.112-1.633.322-2.396C2.806 8.756 3.63 8.25 4.51 8.25H6.75Z" />
+                            </svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" class="size-6 stroke-white hidden">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 9.75 19.5 12m0 0 2.25 2.25M19.5 12l2.25-2.25M19.5 12l-2.25 2.25m-10.5-6 4.72-4.72a.75.75 0 0 1 1.28.53v15.88a.75.75 0 0 1-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.009 9.009 0 0 1 2.25 12c0-.83.112-1.633.322-2.396C2.806 8.756 3.63 8.25 4.51 8.25H6.75Z" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </figure>
+
+        <!-- Mask -->
+        <div id="mask" class="bg-black/90 absolute top-0 right-0 w-full h-full flex items-center justify-center transition-opacity duration-300 ease-linear">
+            <button id="play" class="transition-all duration-100 ease-linear hover:scale-125">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" class="size-12 stroke-white">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 12l-18-12v24Z" />
+                </svg>
+            </button>
+
+            <!-- Continue to the quiz -->
+            <div id="continue" class="hidden flex items-center flex-col">
+                <h1 class="text-white mb-5 text-2xl">Click on the button below to take the quiz!</h1>
+                <button id="take-quiz" class="rounded-md bg-indigo-50 px-3.5 py-2.5 text-lg font-semibold text-indigo-600 shadow-sm hover:bg-indigo-100 inline-flex items-center">
+                    Take the quiz
+                </button>
+                <h1 class="text-white mb-5 text-2xl mt-5">Or</h1>
+                <span id="replay2" class="group/replay text-sm italic font-semibold text-indigo-600 inline-flex items-center cursor-pointer hover:text-indigo-400">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" class="size-6 stroke-indigo-600 group-hover/replay:stroke-indigo-400 mr-2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
+                    </svg>
+                    Replay the video 
+                </span>
+            </div>
+        </div>
+
+        <div id="quiz" class="absolute top-0 left-0 w-full h-full flex flex-col bg-indigo-950 hidden">
+            <div class="w-full h-1/3 flex items-center justify-center relative">
+                <svg width="105" height="39" viewBox="0 0 105 39" fill="none" xmlns="http://www.w3.org/2000/svg" class="absolute top-0 left-0 ml-5 mt-5">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M17.5957 6.81718C20.975 6.81718 23.7535 9.38834 24.0805 12.6805H35.1915V2.52061C35.1915 1.36751 34.2589 0.432739 33.1086 0.432739H2.08286C0.932527 0.432739 0 1.36751 0 2.52061V21.287H13.4726L13.9787 18.7519C12.2302 17.5836 11.0788 15.5922 11.0788 13.3319C11.0788 9.73393 13.9965 6.81718 17.5957 6.81718ZM35.1915 14.9358H23.9137C23.5129 16.5181 22.5331 17.8696 21.2128 18.7519L23.07 28.0552H12.1215L13.0224 23.5424H0.185089C0.833019 27.3518 3.14629 30.7228 6.5589 32.6777L17.5957 39L28.6325 32.6777C32.6884 30.3543 35.1915 26.0307 35.1915 21.348V14.9358Z" fill="url(#paint0_linear_19_40836)"></path>
+                    <path d="M16.2921 17.6056C14.3972 17.0741 13.0074 15.3304 13.0074 13.2612C13.0074 10.7699 15.0221 8.75037 17.5074 8.75037C19.9927 8.75037 22.0074 10.7699 22.0074 13.2612C22.0074 15.2189 20.7633 16.8853 19.0244 17.5093L20.7217 25.8271H14.6145L16.2921 17.6056Z" fill="white"></path>
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M90.371 13.4773C89.9662 12.7493 89.4067 12.1855 88.6924 11.7857C87.9781 11.3859 87.1805 11.1861 86.2995 11.1861C85.5376 11.1861 84.8501 11.3442 84.237 11.6604C83.624 11.9766 83.121 12.4391 82.7281 13.0477V7.39124H81.4603V20.6731H82.6745V18.8115C83.0555 19.444 83.5585 19.9273 84.1835 20.2614C84.8085 20.5955 85.5138 20.7626 86.2995 20.7626C87.1805 20.7626 87.9781 20.5597 88.6924 20.154C89.4067 19.7483 89.9662 19.1814 90.371 18.4535C90.7757 17.7256 90.9781 16.8962 90.9781 15.9654C90.9781 15.0346 90.7757 14.2052 90.371 13.4773ZM42.7984 19.1516C43.2627 19.6409 43.9204 20.0347 44.7716 20.3331C45.6228 20.6314 46.5127 20.7806 47.4413 20.7806C48.4651 20.7806 49.3282 20.6284 50.0306 20.3241C50.7329 20.0198 51.2538 19.6081 51.5931 19.089C51.9323 18.5699 52.102 17.9941 52.102 17.3616C52.102 16.5979 51.9056 15.9923 51.5127 15.5448C51.1198 15.0973 50.6407 14.7631 50.0752 14.5424C49.5097 14.3216 48.7687 14.0979 47.852 13.8711C47.0782 13.6802 46.4621 13.5042 46.0038 13.3431C45.5454 13.182 45.1645 12.9493 44.8609 12.645C44.5573 12.3407 44.4056 11.9379 44.4056 11.4367C44.4056 10.7684 44.6823 10.2225 45.2359 9.79884C45.7895 9.3752 46.6139 9.16339 47.7091 9.16339C48.2806 9.16339 48.8639 9.2499 49.4591 9.42294C50.0544 9.59597 50.6139 9.85552 51.1377 10.2016L51.5841 9.14549C51.0841 8.79942 50.4919 8.52793 49.8073 8.33103C49.1228 8.13413 48.4234 8.03568 47.7091 8.03568C46.6853 8.03568 45.8282 8.19081 45.1377 8.50108C44.4472 8.81135 43.9353 9.22603 43.602 9.74514C43.2687 10.2642 43.102 10.84 43.102 11.4725C43.102 12.2482 43.3014 12.8627 43.7002 13.3162C44.099 13.7697 44.5782 14.1068 45.1377 14.3276C45.6972 14.5483 46.4472 14.7781 47.3877 15.0167C48.1734 15.2077 48.7865 15.3837 49.227 15.5448C49.6675 15.7059 50.0395 15.9356 50.3431 16.2339C50.6466 16.5323 50.7984 16.932 50.7984 17.4332C50.7984 18.0896 50.5187 18.6236 49.9591 19.0353C49.3996 19.447 48.5603 19.6528 47.4413 19.6528C46.6437 19.6528 45.8698 19.5126 45.1198 19.2322C44.3698 18.9518 43.7687 18.5848 43.3163 18.1313L42.7984 19.1516ZM57.1619 21.8008L61.8583 11.2577H60.6083L57.0726 19.259L53.5369 11.2577H52.2155L56.4119 20.6552L56.0012 21.5681C55.7393 22.1409 55.4565 22.5467 55.153 22.7853C54.8494 23.024 54.4833 23.1433 54.0547 23.1433C53.3881 23.1433 52.8167 22.9047 52.3405 22.4273L51.7512 23.376C52.0369 23.6625 52.3762 23.8772 52.769 24.0205C53.1619 24.1637 53.5845 24.2353 54.0369 24.2353C54.7393 24.2353 55.3405 24.0503 55.8405 23.6803C56.3405 23.3104 56.7809 22.6839 57.1619 21.8008ZM77.57 12.2064C78.2426 12.8866 78.5789 13.889 78.5789 15.2136V20.6731H77.3111V15.3389C77.3111 14.3603 77.076 13.6145 76.6057 13.1014C76.1355 12.5882 75.4718 12.3317 74.6146 12.3317C73.6385 12.3317 72.8706 12.633 72.3111 13.2356C71.7515 13.8383 71.4718 14.6706 71.4718 15.7327V20.6731H70.2039V15.3389C70.2039 14.3603 69.9688 13.6145 69.4986 13.1014C69.0283 12.5882 68.3587 12.3317 67.4896 12.3317C66.5254 12.3317 65.7605 12.633 65.195 13.2356C64.6295 13.8383 64.3468 14.6706 64.3468 15.7327V20.6731H63.0789V11.2577H64.2932V12.9761C64.6266 12.4033 65.0908 11.9617 65.6861 11.6515C66.2813 11.3412 66.9658 11.1861 67.7396 11.1861C68.5254 11.1861 69.2069 11.3531 69.7843 11.6873C70.3617 12.0214 70.7932 12.5166 71.0789 13.173C71.4242 12.5524 71.9212 12.0661 72.57 11.7141C73.2188 11.3621 73.9599 11.1861 74.7932 11.1861C75.9718 11.1861 76.8974 11.5262 77.57 12.2064ZM87.996 19.1785C88.5317 18.8742 88.9513 18.4416 89.2549 17.8807C89.5585 17.3199 89.7103 16.6814 89.7103 15.9654C89.7103 15.2494 89.5585 14.611 89.2549 14.0501C88.9513 13.4892 88.5317 13.0567 87.996 12.7524C87.4603 12.448 86.865 12.2959 86.2103 12.2959C85.5436 12.2959 84.9454 12.448 84.4156 12.7524C83.8859 13.0567 83.4692 13.4892 83.1656 14.0501C82.862 14.611 82.7103 15.2494 82.7103 15.9654C82.7103 16.6814 82.862 17.3199 83.1656 17.8807C83.4692 18.4416 83.8859 18.8742 84.4156 19.1785C84.9454 19.4828 85.5436 19.6349 86.2103 19.6349C86.865 19.6349 87.4603 19.4828 87.996 19.1785ZM92.6809 18.4356C93.0975 19.1635 93.669 19.7334 94.3952 20.1451C95.1214 20.5568 95.9368 20.7626 96.8416 20.7626C97.7464 20.7626 98.5618 20.5568 99.288 20.1451C100.014 19.7334 100.583 19.1635 100.993 18.4356C101.404 17.7077 101.609 16.8843 101.609 15.9654C101.609 15.0465 101.404 14.2231 100.993 13.4952C100.583 12.7672 100.014 12.2004 99.288 11.7947C98.5618 11.3889 97.7464 11.1861 96.8416 11.1861C95.9368 11.1861 95.1214 11.3889 94.3952 11.7947C93.669 12.2004 93.0975 12.7672 92.6809 13.4952C92.2642 14.2231 92.0559 15.0465 92.0559 15.9654C92.0559 16.8843 92.2642 17.7077 92.6809 18.4356ZM98.6362 19.1785C99.166 18.8742 99.5797 18.4416 99.8773 17.8807C100.175 17.3199 100.324 16.6814 100.324 15.9654C100.324 15.2494 100.175 14.611 99.8773 14.0501C99.5797 13.4892 99.166 13.0567 98.6362 12.7524C98.1065 12.448 97.5083 12.2959 96.8416 12.2959C96.1749 12.2959 95.5767 12.448 95.0469 12.7524C94.5172 13.0567 94.1005 13.4892 93.7969 14.0501C93.4934 14.611 93.3416 15.2494 93.3416 15.9654C93.3416 16.6814 93.4934 17.3199 93.7969 17.8807C94.1005 18.4416 94.5172 18.8742 95.0469 19.1785C95.5767 19.4828 96.1749 19.6349 96.8416 19.6349C97.5083 19.6349 98.1065 19.4828 98.6362 19.1785ZM104.901 7.39124H103.634V20.6731H104.901V7.39124Z" fill="white"></path>
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M44.0198 32.203C43.5032 32.0526 43.0882 31.8571 42.7748 31.6166L43.3248 30.3936C43.6248 30.6141 43.9815 30.7912 44.3948 30.9249C44.8082 31.0585 45.2215 31.1254 45.6348 31.1254C46.0948 31.1254 46.4348 31.0569 46.6548 30.9199C46.8748 30.7829 46.9848 30.6008 46.9848 30.3736C46.9848 30.2065 46.9198 30.0678 46.7898 29.9576C46.6598 29.8473 46.4932 29.7588 46.2898 29.6919C46.0865 29.6251 45.8115 29.5516 45.4648 29.4714C44.9315 29.3444 44.4948 29.2175 44.1548 29.0905C43.8148 28.9635 43.5232 28.7597 43.2798 28.479C43.0365 28.1983 42.9148 27.8241 42.9148 27.3563C42.9148 26.9487 43.0248 26.5795 43.2448 26.2487C43.4648 25.9179 43.7965 25.6556 44.2398 25.4618C44.6832 25.268 45.2248 25.1711 45.8648 25.1711C46.3115 25.1711 46.7482 25.2245 47.1748 25.3315C47.6015 25.4384 47.9748 25.5921 48.2948 25.7926L47.7948 27.0255C47.1482 26.658 46.5015 26.4742 45.8548 26.4742C45.4015 26.4742 45.0665 26.5477 44.8498 26.6947C44.6332 26.8418 44.5248 27.0356 44.5248 27.2761C44.5248 27.5167 44.6498 27.6955 44.8998 27.8124C45.1498 27.9294 45.5315 28.0446 46.0448 28.1583C46.5782 28.2852 47.0148 28.4122 47.3548 28.5392C47.6948 28.6661 47.9865 28.8666 48.2298 29.1406C48.4732 29.4146 48.5948 29.7855 48.5948 30.2533C48.5948 30.6542 48.4832 31.0201 48.2598 31.3509C48.0365 31.6817 47.7015 31.944 47.2548 32.1378C46.8082 32.3316 46.2648 32.4285 45.6248 32.4285C45.0715 32.4285 44.5365 32.3533 44.0198 32.203ZM56.623 31.0049V32.3081H51.203V25.2912H56.493V26.5943H52.813V28.118H56.063V29.381H52.813V31.0049H56.623ZM59.4463 30.6693C59.7763 31.2206 60.2296 31.6516 60.8063 31.9624C61.3829 32.2731 62.0279 32.4285 62.7413 32.4285C63.3479 32.4285 63.8979 32.3216 64.3913 32.1077C64.8846 31.8939 65.2979 31.5831 65.6313 31.1755L64.5913 30.2132C64.1179 30.7679 63.5313 31.0452 62.8313 31.0452C62.3979 31.0452 62.0113 30.95 61.6713 30.7595C61.3313 30.569 61.0663 30.3034 60.8763 29.9626C60.6863 29.6218 60.5913 29.2342 60.5913 28.7998C60.5913 28.3654 60.6863 27.9778 60.8763 27.637C61.0663 27.2962 61.3313 27.0305 61.6713 26.8401C62.0113 26.6496 62.3979 26.5544 62.8313 26.5544C63.5313 26.5544 64.1179 26.8284 64.5913 27.3764L65.6313 26.4141C65.2979 26.0131 64.8863 25.7057 64.3963 25.4919C63.9063 25.278 63.3579 25.1711 62.7513 25.1711C62.0313 25.1711 61.3829 25.3265 60.8063 25.6372C60.2296 25.9479 59.7763 26.379 59.4463 26.9303C59.1163 27.4816 58.9513 28.1048 58.9513 28.7998C58.9513 29.4948 59.1163 30.118 59.4463 30.6693ZM68.9345 31.5963C68.3778 31.0417 68.0995 30.2498 68.0995 29.2206V25.2912H69.7195V29.1605C69.7195 30.4169 70.2395 31.045 71.2795 31.045C71.7862 31.045 72.1728 30.893 72.4395 30.5889C72.7062 30.2849 72.8395 29.8087 72.8395 29.1605V25.2912H74.4395V29.2206C74.4395 30.2498 74.1612 31.0417 73.6045 31.5963C73.0478 32.151 72.2695 32.4283 71.2695 32.4283C70.2695 32.4283 69.4912 32.151 68.9345 31.5963ZM80.6477 30.3534L81.9977 32.3081H83.7377L82.1677 30.0526C82.6277 29.8522 82.9827 29.5631 83.2327 29.1856C83.4827 28.808 83.6077 28.3586 83.6077 27.8373C83.6077 27.3161 83.4844 26.865 83.2377 26.4841C82.991 26.1032 82.6394 25.8091 82.1827 25.602C81.726 25.3948 81.1877 25.2912 80.5677 25.2912H77.5377V32.3081H79.1577V30.3534H80.6477ZM81.5877 26.9303C81.3344 26.7198 80.9644 26.6146 80.4777 26.6146H79.1577V29.0604H80.4777C80.9644 29.0604 81.3344 28.9535 81.5877 28.7397C81.841 28.5258 81.9677 28.2251 81.9677 27.8375C81.9677 27.4432 81.841 27.1408 81.5877 26.9303ZM88.0059 25.2912H86.3859V32.3081H88.0059V25.2912ZM92.6141 26.6144H90.3741V25.2912H96.4741V26.6144H94.2341V32.3081H92.6141V26.6144ZM102.202 32.3081V29.8221L104.922 25.2912H103.332L101.462 28.4087L99.5923 25.2912H97.8723L100.582 29.802V32.3081H102.202Z" fill="white"></path>
+                    <defs>
+                    <linearGradient id="paint0_linear_19_40836" x1="1.35566" y1="5.16169" x2="1.35566" y2="40.7576" gradientUnits="userSpaceOnUse">
+                    <stop stop-color="#11B6E5"></stop>
+                    <stop offset="1" stop-color="#1185E5"></stop>
+                    </linearGradient>
+                    </defs>
+                </svg>
+                <div class="flex flex-col items-center">
+                    <span class="text-2xl text-white font-semibold" id="question"></span>
+                    <span class="text-md text-white/70 font-normal italic" id="qcounter"></span>
+                </div>
+            </div>
+
+            <div class="bg-gray-100 w-full h-full pt-14 z-50">
+                <div class="bg-white w-1/2 rounded-md mx-auto -mt-32 shadow-lg p-10">
+                    <span class="italic font-light text-gray-400 block mb-5">Please select one answer for each question, then press the "Submit" button.</span>
+
+                    <div id="options" class="space-y-5">
+                    </div>
+
+                    <button id="next" class="self-end ml-auto rounded-md bg-indigo-50 px-3.5 py-2.5 text-md font-semibold text-indigo-600 shadow-sm hover:bg-indigo-100 block mt-5 hidden">
+                        Next
+                    </button>
+
+                    <button id="submit" class="self-end ml-auto rounded-md bg-indigo-50 px-3.5 py-2.5 text-md font-semibold text-indigo-600 shadow-sm hover:bg-indigo-100 block mt-5 hidden">
+                        Submit
+                    </button>
+
+                    <!-- Options template -->
+                    <template id="option-template">
+                        <label id="option" class="flex w-full items-center border border-gray-300 rounded-md py-3 px-3 text-sm font-semibold cursor-pointer hover:bg-indigo-100">
+                            <input type="radio" name="option" class="hidden" />
+                            <span></span>
+                        </label>
+                    </template>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mask -->
+        <div id="end" class="bg-black/90 absolute top-0 right-0 w-full h-full flex items-center justify-center transition-opacity duration-300 ease-linear hidden z-50">
+            <div class="bg-white w-1/3 rounded-md mx-auto py-10 px-5 text-center">
+                <h1 class="text-3xl text-gray-800 font-semibold mb-5">You have completed this course!</h1>
+                <h1 class="text-xl text-gray-800 font-semibold mb-2">Your score is: </h1>
+                <span id="score" class="text-4xl font-semibold text-indigo-600 mb-5 block"></span>
+                <span class="text-md text-gray-700 font-light italic block mb-5">You have answered <span id="correct" class="text-indigo-600 font-semibold"></span> out of <span id="total" class="text-indigo-600 font-semibold"></span> questions correctly.</span>
+
+                <button id="finish" class="rounded-md text-white px-3.5 py-2.5 text-lg font-semibold bg-indigo-600 shadow-sm hover:bg-indigo-800 inline-flex items-center">
+                    Finish Course
+                </button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
