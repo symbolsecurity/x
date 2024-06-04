@@ -9,7 +9,9 @@ This Golang application generates quizzes from video subtitles and packages them
 
 ## Installation
 
-WIP
+```bash
+    go install github.com/symbolsecurity/x/scorm_generator@latest
+```
 
 ## Usage
 The application requires the following flags:
