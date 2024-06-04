@@ -39,13 +39,13 @@ func generateSCORM(cfg *cmd.Config) {
 	}
 
 	// Build JavaScript file
-	err = build.BuildJS(result)
+	js, err := build.BuildJS(result)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	// Create SCORM package
-	err = build.SCORM(cfg.Video, cfg.Output)
+	err = build.SCORM(cfg.Video, cfg.Output, js)
 	if err != nil {
 		log.Fatal(err)
 	}

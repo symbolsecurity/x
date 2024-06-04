@@ -6,18 +6,15 @@ import (
 	"io"
 	"os"
 	"path"
+
+	"github.com/symbolsecurity/x/scorm_generator/template"
 )
 
 // SCORM creates a SCORM-compliant zip archive containing the specified video and other required files.
-func SCORM(videoPath, outputPath string) error {
-	filesToAdd := []struct {
-		sourcePath string
-		zipPath    string
-	}{
-		{"template/imsmanifest.xml", "imsmanifest.xml"},
-		{"tmp/app.js", "app.js"},
-		{"template/index.html", "index_lms.html"},
-		{videoPath, "video.mp4"},
+func SCORM(videoPath, outputPath, js string) error {
+	filesToAdd := []string{
+		"index.html",
+		"imsmanifest.xml",
 	}
 
 	op := path.Join(outputPath, "archive.zip")
@@ -29,36 +26,63 @@ func SCORM(videoPath, outputPath string) error {
 	defer archive.Close()
 
 	w := zip.NewWriter(archive)
-	defer func() {
-		if cerr := w.Close(); cerr != nil && err == nil {
-			err = cerr
-		}
-	}()
+	defer w.Close()
+
+	if err := addJS(w, js); err != nil {
+		return fmt.Errorf("failed to add JavaScript code to zip: %w", err)
+	}
+
+	if err := addVideo(w, videoPath); err != nil {
+		return fmt.Errorf("failed to add video to zip: %w", err)
+	}
 
 	for _, file := range filesToAdd {
-		if err := addFileToZip(w, file.sourcePath, file.zipPath); err != nil {
-			return fmt.Errorf("failed to add file %s to zip: %w", file.sourcePath, err)
+		f, err := template.ReadFile(file)
+		if err != nil {
+			return fmt.Errorf("failed to read template file: %w", err)
+		}
+
+		writer, err := w.Create(file)
+		if err != nil {
+			return fmt.Errorf("failed to create file in zip: %w", err)
+		}
+
+		if _, err := writer.Write(f); err != nil {
+			return fmt.Errorf("failed to write file to zip: %w", err)
 		}
 	}
 
 	return nil
 }
 
-// addFileToZip adds a file to the given zip.Writer.
-func addFileToZip(w *zip.Writer, sourcePath, zipPath string) error {
-	file, err := os.Open(sourcePath)
+// addJS adds the JavaScript code to the zip archive.
+func addJS(w *zip.Writer, js string) error {
+	writer, err := w.Create("app.js")
 	if err != nil {
-		return fmt.Errorf("failed to open file %s: %w", sourcePath, err)
+		return err
+	}
+
+	if _, err := writer.Write([]byte(js)); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func addVideo(w *zip.Writer, videoPath string) error {
+	file, err := os.Open(videoPath)
+	if err != nil {
+		return err
 	}
 	defer file.Close()
 
-	writer, err := w.Create(zipPath)
+	writer, err := w.Create("video.mp4")
 	if err != nil {
-		return fmt.Errorf("failed to create entry %s in zip: %w", zipPath, err)
+		return err
 	}
 
 	if _, err = io.Copy(writer, file); err != nil {
-		return fmt.Errorf("failed to copy file %s to zip: %w", sourcePath, err)
+		return err
 	}
 
 	return nil
