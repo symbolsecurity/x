@@ -24,3 +24,5 @@ The application requires the following flags:
 
 `--output` or `-o`: (Optional) Name of the output ZIP file. Defaults to archive.zip.
 
+`--lang` or `-l`: (Optional) Language of the generated questions. Defaults to English.
+
