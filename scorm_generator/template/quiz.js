@@ -1,3 +1,5 @@
+const QUESTIONS = {{ .Questions }};
+
 const questionElement = document.querySelector("#question");
 const optionsContainer = document.querySelector("#options");
 const nextButton = document.querySelector("#next");
@@ -100,7 +102,7 @@ submitButton.addEventListener("click", () => {
     const correctAnswer = currentQuestion.answer;
     const selectedAnswer = selectedOption.value;
 
-    correctAnswer === selectedAnswer ? handleCorrectAnswer(selectedOption) : handleIncorrectAnswer(selectedOption);
+    correctAnswer == selectedAnswer ? handleCorrectAnswer(selectedOption) : handleIncorrectAnswer(selectedOption);
 
     submitButton.classList.add("hidden");
     nextButton.classList.remove("hidden");

@@ -39,7 +39,7 @@ func (l *Llama3) Send() (Response, error) {
 		return r, err
 	}
 
-	httpReq, err := http.NewRequest("POST", os.Getenv("GROQ_API_URL"), bytes.NewBuffer(jsonData))
+	httpReq, err := http.NewRequest("POST", "https://api.groq.com/openai/v1/chat/completions", bytes.NewBuffer(jsonData))
 	if err != nil {
 		return r, err
 	}

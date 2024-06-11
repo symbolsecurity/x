@@ -7,14 +7,19 @@ import (
 	"os"
 	"path"
 
+	txtTemplate "text/template"
+
 	"github.com/symbolsecurity/x/scorm_generator/template"
 )
 
 // SCORM creates a SCORM-compliant zip archive containing the specified video and other required files.
-func SCORM(videoPath, outputPath, js string) error {
+func SCORM(videoPath, outputPath, questions string) error {
 	filesToAdd := []string{
 		"index.html",
 		"imsmanifest.xml",
+		"api.js",
+		"video.js",
+		"app.js",
 	}
 
 	op := path.Join(outputPath, "archive.zip")
@@ -28,7 +33,7 @@ func SCORM(videoPath, outputPath, js string) error {
 	w := zip.NewWriter(archive)
 	defer w.Close()
 
-	if err := addJS(w, js); err != nil {
+	if err := addJS(w, questions); err != nil {
 		return fmt.Errorf("failed to add JavaScript code to zip: %w", err)
 	}
 
@@ -56,13 +61,30 @@ func SCORM(videoPath, outputPath, js string) error {
 }
 
 // addJS adds the JavaScript code to the zip archive.
-func addJS(w *zip.Writer, js string) error {
-	writer, err := w.Create("app.js")
+func addJS(w *zip.Writer, questions string) error {
+	writer, err := w.Create("quiz.js")
 	if err != nil {
 		return err
 	}
 
-	if _, err := writer.Write([]byte(js)); err != nil {
+	c, err := template.ReadFile("quiz.js")
+	if err != nil {
+		return err
+	}
+
+	data := struct {
+		Questions string
+	}{
+		Questions: questions,
+	}
+
+	// Execute the template with the questions
+	tmpl, err := txtTemplate.New("quiz.js").Parse(string(c))
+	if err != nil {
+		return err
+	}
+
+	if err := tmpl.Execute(writer, data); err != nil {
 		return err
 	}
 
