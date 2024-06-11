@@ -2,23 +2,31 @@ package transcript
 
 import (
 	_ "embed"
-
-	"github.com/symbolsecurity/x/scorm_generator/groq"
+	"fmt"
 )
 
-//go:embed system_prompt.txt
-var systemPrompt string
+type Question struct {
+	Desc    string   `json:"question"`
+	Options []string `json:"options"`
+	Answer  int      `json:"answer"`
+}
 
-func ExtractQuestionsGroq(transcript string) (string, error) {
-	llm := groq.NewModel(groq.LLAMA3_8B)
+type Questions []Question
 
-	llm.SystemPrompt(systemPrompt)
-	llm.UserPrompt("Extract questions from this transcript:\n" + transcript)
+func (q Questions) Validate() error {
+	for _, question := range q {
+		if question.Desc == "" {
+			return fmt.Errorf("question description cannot be empty")
+		}
 
-	resp, err := llm.Send()
-	if err != nil {
-		return "", err
+		if len(question.Options) != 4 {
+			return fmt.Errorf("question must have 4 options")
+		}
+
+		if question.Answer < 0 || question.Answer > 3 {
+			return fmt.Errorf("question answer cannot be empty or invalid")
+		}
 	}
 
-	return resp.Choices[0].Message.Content, nil
+	return nil
 }

@@ -33,19 +33,13 @@ func generateSCORM(cfg *cmd.Config) {
 	}
 
 	// Extract questions from subtitles
-	result, err := transcript.ExtractQuestionsGroq(subs)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	// Build JavaScript file
-	js, err := build.BuildJS(result)
+	result, err := transcript.ExtractQuestionsGroq(subs, cfg.Lang)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	// Create SCORM package
-	err = build.SCORM(cfg.Video, cfg.Output, js)
+	err = build.SCORM(cfg.Video, cfg.Output, result)
 	if err != nil {
 		log.Fatal(err)
 	}
