@@ -9,7 +9,6 @@ const template = document.querySelector("#option-template");
 const takeQuizButton = document.querySelector("#take-quiz");
 const quiz = document.querySelector("#quiz");
 const end = document.querySelector("#end");
-const scoreElement = document.querySelector("#score");
 const correct = document.querySelector("#correct");
 const total = document.querySelector("#total");
 const finish = document.querySelector("#finish");
@@ -33,6 +32,7 @@ const loadQuestion = () => {
         const label = clone.querySelector("label");
 
         span.innerText = `${index + 1}. ${option}`;
+        span.classList.add("font-normal");
         input.setAttribute("value", index);
         input.setAttribute("name", "option");
         label.setAttribute("id", `option-${index}`);
@@ -54,8 +54,8 @@ const attachOptionListeners = () => {
 const handleOptionClick = (event) => {
     const options = optionsContainer.querySelectorAll("label[id^='option-']");
     
-    options.forEach(opt => opt.classList.remove("border-indigo-500"));
-    event.currentTarget.classList.add("border-indigo-500");
+    options.forEach(opt => opt.classList.remove("border-blue-500"));
+    event.currentTarget.classList.add("border-blue-500");
     event.currentTarget.querySelector("input").checked = true;
 
     submitButton.classList.remove("hidden");
@@ -82,8 +82,6 @@ nextButton.addEventListener("click", () => {
 
     end.classList.remove("hidden");
 
-    const percentage = (score / 100) * 100;
-    scoreElement.innerText = `${percentage.toFixed(2)}%`;
     correct.innerText = correctAnswers;
     total.innerText = QUESTIONS.length;
 });
@@ -124,7 +122,7 @@ finish.addEventListener("click", () => {
     }
 
     // If the window is not closed, display a message to the user.
-    document.body.innerHTML = "<h1 class='text-2xl text-white text-center mt-20'>Thank you for taking the quiz. You can now close this window.</h1>";
+    document.body.innerHTML = `<div class="flex flex-col text-center text-white"><h1 class='text-3xl pt-20 mb-2 font-semibold'>Thank you for taking the quiz.</h1> <p class="text-lg font-light">You can now close this window.</p></div>`;
 });
 
 

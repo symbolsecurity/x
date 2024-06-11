@@ -20,6 +20,7 @@ func SCORM(videoPath, outputPath, questions string) error {
 		"api.js",
 		"video.js",
 		"app.js",
+		"favicon.png",
 	}
 
 	op := path.Join(outputPath, "archive.zip")
