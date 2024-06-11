@@ -36,8 +36,6 @@ func ExtractQuestionsGroq(transcript, lang string) (string, error) {
 
 	d := []byte(resp.Choices[0].Message.Content)
 
-	fmt.Println(string(d))
-
 	var questions Questions
 	if err := json.Unmarshal(d, &questions); err != nil {
 		return "", err
