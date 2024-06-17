@@ -15,7 +15,7 @@ import (
 // SCORM creates a SCORM-compliant zip archive containing the specified video and other required files.
 func SCORM(videoPath, outputPath, questions string) error {
 	filesToAdd := []string{
-		"index.html",
+		"index_lms.html",
 		"imsmanifest.xml",
 		"api.js",
 		"video.js",
