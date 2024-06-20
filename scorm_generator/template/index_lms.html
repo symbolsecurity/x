@@ -115,7 +115,7 @@
             </div>
         </div>
 
-        <div id="quiz" class="absolute top-0 left-0 w-full h-full flex flex-col bg-blue-950 hidden">
+        <div id="quiz" class="absolute top-0 left-0 w-full h-full flex flex-col bg-blue-950 overflow-auto hidden">
             <div class="w-full py-14 flex items-center justify-center relative">
                 <svg width="105" height="39" viewBox="0 0 105 39" fill="none" xmlns="http://www.w3.org/2000/svg" class="absolute top-0 left-0 ml-8 mt-8">
                     <path fill-rule="evenodd" clip-rule="evenodd" d="M17.5957 6.81718C20.975 6.81718 23.7535 9.38834 24.0805 12.6805H35.1915V2.52061C35.1915 1.36751 34.2589 0.432739 33.1086 0.432739H2.08286C0.932527 0.432739 0 1.36751 0 2.52061V21.287H13.4726L13.9787 18.7519C12.2302 17.5836 11.0788 15.5922 11.0788 13.3319C11.0788 9.73393 13.9965 6.81718 17.5957 6.81718ZM35.1915 14.9358H23.9137C23.5129 16.5181 22.5331 17.8696 21.2128 18.7519L23.07 28.0552H12.1215L13.0224 23.5424H0.185089C0.833019 27.3518 3.14629 30.7228 6.5589 32.6777L17.5957 39L28.6325 32.6777C32.6884 30.3543 35.1915 26.0307 35.1915 21.348V14.9358Z" fill="url(#paint0_linear_19_40836)"></path>
@@ -130,19 +130,19 @@
                     </defs>
                 </svg>
                 <div class="flex flex-col items-center py-6 text-center">
-                    <h2 class="text-4xl text-white font-semibold">Take the Quiz</h2>
+                    <h2 class="text-2xl xl:text-4xl text-white font-semibold">Take the Quiz</h2>
                     <p class="italic font-light text-white/70 block mt-2 mb-5 px-4">Please select one answer for each question, then press the "Submit" button.</p>
                 </div>
             </div>
 
-            <div class="bg-gray-100 w-full h-full pt-14 z-50">
+            <div class="bg-gray-100 w-full h-full py-14 z-50">
                 <div class="bg-white md:w-2/3 xl:w-1/2 rounded-md mx-8 md:mx-auto -mt-32 shadow-lg p-10">
-                    <div class="text-center mb-8">
+                    <div class="text-center mb-6">
+                        <h2 class="text-lg xl:text-2xl text-gray-900 font-semibold text-center" id="question"></h2>
                         <p class="text-md text-gray-400 font-normal text-center" id="qcounter"></p>
-                        <h2 class="text-2xl text-gray-900 font-semibold text-center" id="question"></h2>
                     </div>
 
-                    <div id="options" class="space-y-5">
+                    <div id="options" class="space-y-3">
                     </div>
 
                     <button id="next" class="self-end ml-auto rounded-md bg-blue-50 px-3.5 py-2.5 text-md font-semibold text-blue-600 shadow-sm hover:bg-blue-100 block mt-5 hidden">
